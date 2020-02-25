@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="form-group">
+    <h1>Done</h1>
+    <form method="post" action="{{ url_for('show_main_theme') }}" class="main_theme">
+        <div class="container">
+            <!--
+            <div class="row">
+                <div class="col-sm-3">
+                    <textarea name="main_theme" cols="20" rows="3" class="form-control">{{ main_theme }}</textarea>
+                </div>
+            </div>
+            -->
+            <div class="row">
+                <input name="done_to_items" type=submit value=戻る class="btn btn-secondary">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

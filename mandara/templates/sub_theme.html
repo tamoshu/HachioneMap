@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block body %}
+    <h1>Sub theme</h1>
+    <form method="post" action="{{ url_for('show_main_theme') }}" class="main_theme">
+        <div class="container">
+            <div class="row">
+                {% for sub_theme in sub_themes[0:3] %}
+                    <div class="col-sm-3">
+                        <textarea name="sub_theme{{ loop.index-1 }}" cols="20" rows="3" class="form-control">{{ sub_theme }}</textarea>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <textarea name="sub_theme3" cols="20" rows="3" class="form-control">{{ sub_themes[3] }}</textarea>
+                </div>
+                <div class="col-sm-3">
+                    <textarea name="main_theme" cols="20" rows="3" class="form-control" readonly>{{ main_theme }}</textarea>
+                </div>
+                <div class="col-sm-3">
+                    <textarea name="sub_theme4" cols="20" rows="3" class="form-control">{{ sub_themes[4] }}</textarea>
+                </div>
+            </div>
+            <div class="row">
+                {% for sub_theme in sub_themes[5:8] %}
+                    <div class="col-sm-3">
+                        <textarea name="sub_theme{{ loop.index+4 }}" cols="20" rows="3" class="form-control">{{ sub_theme }}</textarea>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <input name="sub_to_main" type=submit value=戻る class="btn btn-secondary">
+                <input name="sub_to_items_sel" type=submit value=次へ class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+{% endblock %}
