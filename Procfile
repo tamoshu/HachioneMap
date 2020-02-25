@@ -1,1 +1,1 @@
-web: gunicorn predictfile:app --log-file -
+web: gunicorn mandara:app --log-file -
