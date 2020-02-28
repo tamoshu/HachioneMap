@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
     <h1>Sub theme</h1>
-    <form method="post" action="{{ url_for('show_main_theme') }}" class="main_theme">
+    <form method="post" action="{{ url_for('show_chart', username=username) }}" class="main_theme">
         <div class="container">
             <div class="row">
                 {% for sub_theme in sub_themes[0:3] %}

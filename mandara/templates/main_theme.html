@@ -2,7 +2,7 @@
 {% block body %}
 <div class="form-group">
     <h1>Main theme</h1>
-    <form method="post" action="{{ url_for('show_main_theme') }}" class="main_theme">
+    <form method="post" action="{{ url_for('show_chart', username=username) }}" class="main_theme">
         <div class="container">
             <div class="row">
                 <div class="col-sm-3">
