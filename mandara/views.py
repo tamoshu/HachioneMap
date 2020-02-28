@@ -10,12 +10,12 @@ def set_username():
     max_models_num = 20
 
     username = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-    app.logger.debug("username = " + username)
+    app.logger.debug('username = ' + username)
 
     # username重複制限
     while username in models.keys():
         username = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-        app.logger.debug("username = " + username)
+        app.logger.debug('username = ' + username)
 
     # model数制限
     if len(models) > max_models_num - 1:
