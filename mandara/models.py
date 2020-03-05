@@ -3,7 +3,7 @@ class MandaraModel:
     def __init__(self):
         self.main_theme = ''
         self.sub_themes = [''] * 8
-        self.items = [[''] * 8] * 8
+        self.items = [[''] * 8 for i in range(8)]
 
     def init(self):
         self.main_theme = ''

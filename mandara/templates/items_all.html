@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+{% block body %}
+
+{% set SUBTHEME_COLS = 3 %}
+{% set ITEM_COLS = 3 %}
+
+    <h1>Items all</h1>
+    <form method="post" action="{{ url_for('show_chart', username=username) }}" class="main_theme">
+        <div class="container">
+            <!-- subtheme 0~2 items-->
+            <div class="row">
+                {% for subtheme_col in range(SUBTHEME_COLS) %}
+                    {% for item in items[subtheme_col][0:3] %}
+                        <div class="col-sm-1">
+                            <textarea name="item{{subtheme_col}}_{{ loop.index-1 }}" class="form-control">{{ item }}</textarea>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                {% for subtheme_col in range(SUBTHEME_COLS) %}
+                    <div class="col-sm-1">
+                        <textarea name="item{{subtheme_col}}_3" class="form-control">{{ items[subtheme_col][3] }}</textarea>
+                    </div>
+                    <div class="col-sm-1">
+                        <textarea name="sub_theme{{subtheme_col}}" class="form-control" readonly>{{ sub_themes[subtheme_col] }}</textarea>
+                    </div>
+                    <div class="col-sm-1">
+                        <textarea name="item{{subtheme_col}}_4" class="form-control">{{ items[subtheme_col][4] }}</textarea>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                {% for subtheme_col in range(SUBTHEME_COLS) %}
+                    {% for item in items[subtheme_col][5:8] %}
+                        <div class="col-sm-1">
+                            <textarea name="item{{subtheme_col}}_{{ loop.index+4 }}" class="form-control">{{ item }}</textarea>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <!-- subtheme 0~2 items End -->
+
+
+            <!-- subtheme 3~4 items & maintheme & subthemes -->
+            <div class="row">
+                <!-- subtheme3 - item0~2 -->
+                {% for item_col in range(ITEM_COLS) %}
+                    <div class="col-sm-1">
+                        <textarea name="item3_{{ item_col }}" class="form-control">{{ items[3][item_col] }}</textarea>
+                    </div>
+                {% endfor %}
+
+                <!-- subtheme 0~2 -->
+                {% for subtheme_col in range(SUBTHEME_COLS) %}
+                    <div class="col-sm-1">
+                        <textarea name="sub_theme{{subtheme_col}}" class="form-control" readonly>{{ sub_themes[subtheme_col] }}</textarea>
+                    </div>
+                {% endfor %}
+
+                <!-- subtheme4 - item0~2 -->
+                {% for item_col in range(ITEM_COLS) %}
+                    <div class="col-sm-1">
+                        <textarea name="item4_{{ item_col }}" class="form-control">{{ items[4][item_col] }}</textarea>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <!-- subtheme3 - item3,4 -->
+                <div class="col-sm-1">
+                    <textarea name="item3_3" class="form-control">{{ items[3][3] }}</textarea>
+                </div>
+                <div class="col-sm-1">
+                    <textarea name="sub_theme3" class="form-control" readonly>{{ sub_themes[3] }}</textarea>
+                </div>
+                <div class="col-sm-1">
+                    <textarea name="item3_4" class="form-control">{{ items[3][4] }}</textarea>
+                </div>
+
+                <!-- subtheme3, maintheme, subtheme4 -->
+                <div class="col-sm-1">
+                    <textarea name="sub_theme3" class="form-control" readonly>{{ sub_themes[3] }}</textarea>
+                </div>
+                <div class="col-sm-1">
+                    <textarea name="main_theme" class="form-control" readonly>{{ main_theme }}</textarea>
+                </div>
+                <div class="col-sm-1">
+                    <textarea name="sub_theme4" class="form-control" readonly>{{ sub_themes[4] }}</textarea>
+                </div>
+
+                <!-- subtheme4 - item3~4 -->
+                <div class="col-sm-1">
+                    <textarea name="item4_3" class="form-control">{{ items[4][3] }}</textarea>
+                </div>
+                <div class="col-sm-1">
+                    <textarea name="sub_theme4" class="form-control" readonly>{{ sub_themes[4] }}</textarea>
+                </div>
+                <div class="col-sm-1">
+                    <textarea name="item4_4" class="form-control">{{ items[4][4] }}</textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- subtheme3 - item5~7 -->
+                {% for item_col in range(ITEM_COLS*2-1, ITEM_COLS*3-1) %}
+                    <div class="col-sm-1">
+                        <textarea name="item3_{{ item_col }}" class="form-control">{{ items[3][item_col] }}</textarea>
+                    </div>
+                {% endfor %}
+
+                <!-- subtheme 5~7 -->
+                {% for subtheme_col in range(SUBTHEME_COLS*2-1, SUBTHEME_COLS*3-1) %}
+                    <div class="col-sm-1">
+                        <textarea name="sub_theme{{subtheme_col}}" class="form-control" readonly>{{ sub_themes[subtheme_col] }}</textarea>
+                    </div>
+                {% endfor %}
+
+                <!-- subtheme4 - item0~2 -->
+                {% for item_col in range(ITEM_COLS*2-1, ITEM_COLS*3-1) %}
+                    <div class="col-sm-1">
+                        <textarea name="item4_{{ item_col }}" class="form-control">{{ items[4][item_col] }}</textarea>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- subtheme 3~4 items & maintheme & subtheme End -->
+
+
+             <!-- subtheme 5~7 items-->
+            <div class="row">
+                {% for subtheme_col in range(SUBTHEME_COLS*2-1, SUBTHEME_COLS*3-1) %}
+                    {% for item in items[subtheme_col][0:3] %}
+                        <div class="col-sm-1">
+                            <textarea name="item{{subtheme_col}}_{{ loop.index-1 }}" class="form-control">{{ item }}</textarea>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                {% for subtheme_col in range(SUBTHEME_COLS*2-1, SUBTHEME_COLS*3-1) %}
+                    <div class="col-sm-1">
+                        <textarea name="item{{subtheme_col}}_3" class="form-control">{{ items[subtheme_col][3] }}</textarea>
+                    </div>
+                    <div class="col-sm-1">
+                        <textarea name="sub_theme{{subtheme_col}}" class="form-control" readonly>{{ sub_themes[subtheme_col] }}</textarea>
+                    </div>
+                    <div class="col-sm-1">
+                        <textarea name="item{{subtheme_col}}_4" class="form-control">{{ items[subtheme_col][4] }}</textarea>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                {% for subtheme_col in range(SUBTHEME_COLS*2-1, SUBTHEME_COLS*3-1) %}
+                    {% for item in items[subtheme_col][5:8] %}
+                        <div class="col-sm-1">
+                            <textarea name="item{{subtheme_col}}_{{ loop.index+4 }}" class="form-control">{{ item }}</textarea>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <!-- subtheme 5~7 items End -->
+
+            <div class="row">
+                <input name="items_all_to_sub" type=submit value=戻る class="btn btn-secondary">
+            </div>
+        </div>
+
+
+    </form>
+{% endblock %}

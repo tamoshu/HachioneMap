@@ -3,6 +3,9 @@ from mandara.models import MandaraModel
 from mandara import app
 import random, string
 
+import pandas as pd
+import plotly.graph_objects as go
+
 models = {}
 
 @app.route('/', methods=['GET','POST'])
@@ -42,8 +45,8 @@ def show_chart(username):
         main_theme = model.get_main_theme()
         sub_themes = model.get_sub_themes()
         return render_template('sub_theme.html',
-                               username=username,
-                               main_theme=main_theme,
+                                username=username,
+                                main_theme=main_theme,
                                 sub_themes=sub_themes
                                 )
 
@@ -55,7 +58,7 @@ def show_chart(username):
                                main_theme=main_theme
                                )
 
-    elif 'sub_to_items_sel' in request.form:
+    elif 'sub_to_items_all' in request.form:
         model = models[username]
         main_theme = model.get_main_theme()
 
@@ -70,64 +73,109 @@ def show_chart(username):
         sub_themes[7] = request.form['sub_theme7']
         model.set_sub_themes(sub_themes)
 
-        return render_template('subsub_sel.html',
+        items = model.get_items()
+
+        return render_template('items_all.html',
                                username=username,
                                main_theme=main_theme,
-                               sub_themes=sub_themes
+                               sub_themes=sub_themes,
+                               items=items
                                )
 
-    elif 'items_sel_to_sub' in request.form:
+    elif 'items_all_to_sub' in request.form:
         model = models[username]
         main_theme = model.get_main_theme()
         sub_themes = model.get_sub_themes()
-
-        return render_template('sub_theme.html',
-                               username=username,
-                               main_theme=main_theme,
-                               sub_themes=sub_themes
-                               )
-
-    elif any(items_existence):  # items_sel to items
-        model = models[username]
-        sub_themes = model.get_sub_themes()
-
-        sub_theme_no = items_existence.index(True)
-        sub_theme = sub_themes[sub_theme_no]
-
         items = model.get_items()
 
-        return render_template('items.html',
-                               username=username,
-                               sub_theme=sub_theme,
-                               sub_theme_no=sub_theme_no,
-                               items=items[sub_theme_no]
-                               )
+        for subtheme_index in range(8):
+            for item_index in range(8):
+                temp_string = 'item' + str(subtheme_index) + '_' + str(item_index)
+                items[subtheme_index][item_index] = request.form[temp_string]
 
-    elif 'items_to_items_sel' in request.form:
-        model = models[username]
-        sub_items = [''] * 8
-        sub_items[0] = request.form['item0']
-        sub_items[1] = request.form['item1']
-        sub_items[2] = request.form['item2']
-        sub_items[3] = request.form['item3']
-        sub_items[4] = request.form['item4']
-        sub_items[5] = request.form['item5']
-        sub_items[6] = request.form['item6']
-        sub_items[7] = request.form['item7']
-
-        main_theme = model.get_main_theme()
-        sub_themes = model.get_sub_themes()
-        sub_theme_no = sub_themes.index(request.form['sub_theme'])
-
-        items = model.get_items()
-        items[sub_theme_no] = sub_items
         model.set_items(items)
 
-        return render_template('subsub_sel.html',
-                               username=username,
-                               main_theme=main_theme,
-                               sub_themes=sub_themes
-                               )
+        return render_template('sub_theme.html',
+                                username=username,
+                                main_theme=main_theme,
+                                sub_themes=sub_themes
+                                )
+
+        """
+        elif 'sub_to_items_sel' in request.form:
+            model = models[username]
+            main_theme = model.get_main_theme()
+    
+            sub_themes = [''] * 8
+            sub_themes[0] = request.form['sub_theme0']
+            sub_themes[1] = request.form['sub_theme1']
+            sub_themes[2] = request.form['sub_theme2']
+            sub_themes[3] = request.form['sub_theme3']
+            sub_themes[4] = request.form['sub_theme4']
+            sub_themes[5] = request.form['sub_theme5']
+            sub_themes[6] = request.form['sub_theme6']
+            sub_themes[7] = request.form['sub_theme7']
+            model.set_sub_themes(sub_themes)
+    
+            return render_template('subsub_sel.html',
+                                   username=username,
+                                   main_theme=main_theme,
+                                   sub_themes=sub_themes
+                                   )
+    
+        elif 'items_sel_to_sub' in request.form:
+            model = models[username]
+            main_theme = model.get_main_theme()
+            sub_themes = model.get_sub_themes()
+    
+            return render_template('sub_theme.html',
+                                   username=username,
+                                   main_theme=main_theme,
+                                   sub_themes=sub_themes
+                                   )
+    
+        elif any(items_existence):  # items_sel to items
+            model = models[username]
+            sub_themes = model.get_sub_themes()
+    
+            sub_theme_no = items_existence.index(True)
+            sub_theme = sub_themes[sub_theme_no]
+    
+            items = model.get_items()
+    
+            return render_template('items.html',
+                                   username=username,
+                                   sub_theme=sub_theme,
+                                   sub_theme_no=sub_theme_no,
+                                   items=items[sub_theme_no]
+                                   )
+    
+        elif 'items_to_items_sel' in request.form:
+            model = models[username]
+            sub_items = [''] * 8
+            sub_items[0] = request.form['item0']
+            sub_items[1] = request.form['item1']
+            sub_items[2] = request.form['item2']
+            sub_items[3] = request.form['item3']
+            sub_items[4] = request.form['item4']
+            sub_items[5] = request.form['item5']
+            sub_items[6] = request.form['item6']
+            sub_items[7] = request.form['item7']
+    
+            main_theme = model.get_main_theme()
+            sub_themes = model.get_sub_themes()
+            sub_theme_no = sub_themes.index(request.form['sub_theme'])
+    
+            items = model.get_items()
+            items[sub_theme_no] = sub_items
+            model.set_items(items)
+    
+            return render_template('subsub_sel.html',
+                                   username=username,
+                                   main_theme=main_theme,
+                                   sub_themes=sub_themes
+                                   )
+        """
 
     elif 'items_to_done' in request.form:
         return render_template('done.html')
@@ -136,11 +184,20 @@ def show_chart(username):
         model = models[username]
         main_theme = model.get_main_theme()
         sub_themes = model.get_sub_themes()
+        items = model.get_items()
 
+        """
         return render_template('subsub_sel.html',
                                username=username,
                                main_theme=main_theme,
                                sub_themes=sub_themes
+                               )
+        """
+        return render_template('items_all.html',
+                               username=username,
+                               main_theme=main_theme,
+                               sub_themes=sub_themes,
+                               items=items
                                )
 
     else:
