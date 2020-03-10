@@ -4,7 +4,11 @@ from mandara import app
 import random, string
 
 import pandas as pd
-import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+#from io import BytesIO
+import io
+import base64
 
 models = {}
 
@@ -25,7 +29,6 @@ def set_username():
         models.pop(0)
 
     model = MandaraModel()
-    model.init()
     models[username] = model
 
     return redirect(url_for('show_chart', username=username))
@@ -177,10 +180,53 @@ def show_chart(username):
                                    )
         """
 
-    elif 'items_to_done' in request.form:
-        return render_template('done.html')
+    elif 'items_all_to_done' in request.form:
+        import pandas.plotting as plotting
+        model = models[username]
 
-    elif 'done_to_items' in request.form:
+        items = model.get_items()
+
+        ### Save items
+        for subtheme_index in range(8):
+            for item_index in range(8):
+                temp_string = 'item' + str(subtheme_index) + '_' + str(item_index)
+                items[subtheme_index][item_index] = request.form[temp_string]
+
+        model.set_items(items)
+
+        ### Get chart
+        chart = model.get_chart()
+        df_chart = pd.DataFrame(chart)
+
+        fig, ax = plt.subplots(1, 1)
+        plotting.table(ax, df_chart, loc='center')
+        ax.axis('off')
+
+        canvas = FigureCanvasAgg(fig)
+        png_output = io.BytesIO()
+        canvas.print_png(png_output)
+        plt.savefig(png_output)
+
+        img_data = base64.b64encode(png_output.getvalue())
+
+        ''' # Using plotly
+        import plotly.graph_objects as go
+
+        fig_go = go.Figure(data=[go.Table(
+            cells=dict(values=df_chart.values,
+                       fill_color='lavender',
+                       align='left'))
+        ])
+        png = fig_go.to_image(format="png")
+        img_data = base64.b64encode(png)
+        '''
+
+        return render_template('done.html',
+                               username=username,
+                               img_data=img_data.decode("ascii")
+                               )
+
+    elif 'done_to_items_all' in request.form:
         model = models[username]
         main_theme = model.get_main_theme()
         sub_themes = model.get_sub_themes()
@@ -202,6 +248,7 @@ def show_chart(username):
 
     else:
         model = models[username]
+        model.init()
         main_theme = model.get_main_theme()
         return render_template('main_theme.html',
                                username=username,
