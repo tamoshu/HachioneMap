@@ -12,7 +12,15 @@ import base64
 
 models = {}
 
-@app.route('/', methods=['GET','POST'])
+@app.route('/')
+def init():
+    return redirect(url_for('show_index'))
+
+@app.route('/index')
+def show_index():
+    return render_template('index.html')
+
+@app.route('/chart')
 def set_username():
     max_models_num = 20
 
@@ -26,14 +34,14 @@ def set_username():
 
     # model数制限
     if len(models) > max_models_num - 1:
-        models.pop(0)
+        models.pop(next(iter(models)))      # 先頭のusername, modelを削除
 
     model = MandaraModel()
     models[username] = model
 
     return redirect(url_for('show_chart', username=username))
 
-@app.route('/<string:username>', methods=['GET','POST'])
+@app.route('/chart/<string:username>', methods=['GET','POST'])
 def show_chart(username):
     #app.logger.debug(request.form)
     items = ['items0','items1','items2','items3','items4','items5','items6','items7','items8']
