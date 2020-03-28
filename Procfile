@@ -1,1 +1,1 @@
-web: gunicorn hachione:app --log-file -
+web: gunicorn hachione:app --log-file=-
