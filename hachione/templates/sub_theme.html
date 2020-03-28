@@ -1,0 +1,68 @@
+{# {% extends "layout.html" %} #}
+{% extends "chart.html" %}
+{% block body %}
+<header class="major">
+    <h4>Step2/3</h4>
+    <h5>問題解決に必要なことを８つ連想してみましょう。</h5>
+    <div class="container">
+        <div class="row justify-content-center proc-outer">
+            <ol class="proc-inner">
+                <li>問題、目標の周りの８つのマスのいずれかをクリック or タップします。</li>
+                <li>フォームがあらわれるので、問題から連想したことを入力します。</li>
+                <li>入力した文字が、選択したマスに入力されます。マスをどんどん埋めていきましょう。</li>
+                <li>マスを埋めたら、「次へ」を押してください。<br>
+                    （すべて埋めなくてもいいですが、できるだけたくさん埋めましょう。）</li>
+            </ol>
+        </div>
+    </div>
+</header>
+
+<img src="data:image/png;base64, {{ chart_img3x3 }}" class="img-fluid" usemap="#3x3">
+<map name="3x3">
+    <area shape="rect" coords="17,11,124,117" alt="sub_theme0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,11,230,117" alt="sub_theme1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,11,336,117" alt="sub_theme2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="17,117,124,223" alt="sub_theme3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,117,230,223" alt="main_theme" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,117,336,223" alt="sub_theme4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="17,223,124,329" alt="sub_theme5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,223,230,329" alt="sub_theme6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,223,336,329" alt="sub_theme7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+</map>
+
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">
+  <!--以下modal-dialogのCSSの部分で modal-lgやmodal-smを追加するとモーダルのサイズを変更することができる-->
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <!--
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      -->
+      <form method="post" action="{{ url_for('show_chart', username=username) }}">
+          <div class="modal-body">
+              <textarea name="" cols="20" rows="3" class="form-control"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+            <input name="reload_sub" type=submit value=保存 class="btn btn-primary">
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+    <form method="post" action="{{ url_for('show_chart', username=username) }}" class="main_theme">
+        <div class="container">
+            <div class="row justify-content-around">
+                <input name="sub_to_main" type=submit value=戻る class="btn btn-secondary">
+                <input name="sub_to_items_all" type=submit value=次へ class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

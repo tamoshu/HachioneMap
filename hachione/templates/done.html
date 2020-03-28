@@ -2,7 +2,13 @@
 {% extends "chart.html" %}
 {% block body %}
 <div class="form-group">
-    <h1>Done</h1>
+	<header class="major">
+        <h4>ハチワンマップ完成！</h4>
+        <p>お疲れ様でした。ハチワンマップの画像を保存してください。あなたの問題が解決されますように。</p>
+    </header>
+
+    <img src="data:image/png;base64, {{ chart_img9x9 }}" class="img-fluid">
+
     <form method="post" action="{{ url_for('show_chart', username=username) }}" class="main_theme">
         <div class="container">
             <!--
@@ -12,10 +18,9 @@
                 </div>
             </div>
             -->
-            <img src="data:image/png;base64, {{ img_data }}">
-            <div class="row">
+            <div class="row justify-content-around">
                 <input name="done_to_items_all" type=submit value=戻る class="btn btn-secondary">
-                <input name="restart" type=submit value=はじめから class="btn btn-secondary">
+                <input name="restart" type=submit value=はじめから class="btn btn-primary">
             </div>
         </div>
     </form>

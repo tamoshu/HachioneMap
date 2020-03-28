@@ -1,0 +1,161 @@
+{# {% extends "layout.html" %} #}
+{% extends "chart.html" %}
+{% block body %}
+
+{% set SUBTHEME_COLS = 3 %}
+{% set ITEM_COLS = 3 %}
+
+<header class="major">
+    <h4>Step3/3</h4>
+    <h5>Step2で連想したことから、さらに８つ連想してみましょう。</h5>
+    <div>
+        <div class="row justify-content-center proc-outer">
+            <ol class="proc-inner">
+                <li>空いてるマスのいずれかをクリック or タップします。</li>
+                <li>フォームがあらわれるので、連想したことを入力します。</li>
+                <li>入力した文字が、選択したマスに入力されます。マスをどんどん埋めていきましょう。</li>
+                <li>マスを埋めたら、「完了」を押してください。<br>
+                    （すべて埋めなくてもいいですが、できるだけ埋めましょう。）</li>
+            </ol>
+        </div>
+    </div>
+</header>
+
+<img src="data:image/png;base64, {{ chart_img9x9 }}" class="img-fluid" usemap="#9x9">
+<map name="9x9">
+    {# sub_theme0 #}
+    <area shape="rect" coords="17,11,124,117" alt="item0_0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,11,230,117" alt="item0_1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,11,336,117" alt="item0_2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="17,117,124,223" alt="item0_3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,117,230,223" alt="sub_theme0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,117,336,223" alt="item0_4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="17,223,124,329" alt="item0_5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,223,230,329" alt="item0_6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,223,336,329" alt="item0_7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+
+    {# sub_theme1 #}
+    <area shape="rect" coords="335,11,442,117" alt="item1_0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="441,11,548,117" alt="item1_1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="547,11,654,117" alt="item1_2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="335,117,442,223" alt="item1_3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="441,117,548,223" alt="sub_theme1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="547,117,654,223" alt="item1_4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="335,223,442,329" alt="item1_5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="441,223,548,329" alt="item1_6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="547,223,654,329" alt="item1_7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+
+    {# sub_theme2 #}
+    <area shape="rect" coords="653,11,760,117" alt="item2_0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="759,11,866,117" alt="item2_1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="865,11,972,117" alt="item2_2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="653,117,760,223" alt="item2_3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="759,117,866,223" alt="sub_theme2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="865,117,972,223" alt="item2_4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="653,223,760,329" alt="item2_5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="759,223,866,329" alt="item2_6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="865,223,972,329" alt="item2_7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+
+    {# sub_theme3 #}
+    <area shape="rect" coords="17,329,124,435" alt="item3_0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,329,230,435" alt="item3_1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,329,336,435" alt="item3_2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="17,435,124,541" alt="item3_3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,435,230,541" alt="sub_theme3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,435,336,541" alt="item3_4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="17,541,124,647" alt="item3_5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,541,230,647" alt="item3_6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,541,336,647" alt="item3_7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+
+    {# main_theme #}
+    <area shape="rect" coords="335,329,442,435" alt="sub_theme0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="441,329,548,435" alt="sub_theme1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="547,329,654,435" alt="sub_theme2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="335,435,442,541" alt="sub_theme3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="441,435,548,541" alt="main_theme" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="547,435,654,541" alt="sub_theme4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="335,541,442,647" alt="sub_theme5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="441,541,548,647" alt="sub_theme6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="547,541,654,647" alt="sub_theme7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+
+    {# sub_theme4 #}
+    <area shape="rect" coords="653,329,760,435" alt="item4_0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="759,329,866,435" alt="item4_1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="865,329,972,435" alt="item4_2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="653,435,760,541" alt="item4_3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="759,435,866,541" alt="sub_theme4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="865,435,972,541" alt="item4_4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="653,541,760,647" alt="item4_5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="759,541,866,647" alt="item4_6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="865,541,972,647" alt="item4_7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+
+    {# sub_theme5 #}
+    <area shape="rect" coords="17,647,124,753" alt="item5_0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,647,230,753" alt="item5_1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,647,336,753" alt="item5_2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="17,753,124,859" alt="item5_3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,753,230,859" alt="sub_theme5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,753,336,859" alt="item5_4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="17,859,124,965" alt="item5_5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="123,859,230,965" alt="item5_6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="229,859,336,965" alt="item5_7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+
+    {# sub_theme6 #}
+    <area shape="rect" coords="335,647,442,753" alt="item6_0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="441,647,548,753" alt="item6_1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="547,647,654,753" alt="item6_2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="335,753,442,859" alt="item6_3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="441,753,548,859" alt="sub_theme6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="547,753,654,859" alt="item6_4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="335,859,442,965" alt="item6_5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="441,859,548,965" alt="item6_6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="547,859,654,965" alt="item6_7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+
+    {# sub_theme7 #}
+    <area shape="rect" coords="653,647,760,753" alt="item7_0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="759,647,866,753" alt="item7_1" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="865,647,972,753" alt="item7_2" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="653,753,760,859" alt="item7_3" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="759,753,866,859" alt="sub_theme7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="865,753,972,859" alt="item7_4" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="653,859,760,965" alt="item7_5" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="759,859,866,965" alt="item7_6" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+    <area shape="rect" coords="865,859,972,965" alt="item7_7" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>
+</map>
+
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">
+  <!--以下modal-dialogのCSSの部分で modal-lgやmodal-smを追加するとモーダルのサイズを変更することができる-->
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <!--
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      -->
+      <form method="post" action="{{ url_for('show_chart', username=username) }}">
+          <div class="modal-body">
+              <textarea name="" cols="20" rows="3" class="form-control"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+            <input name="reload_items_all" type=submit value=保存 class="btn btn-primary">
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+    <form method="post" action="{{ url_for('show_chart', username=username) }}" class="form-group">
+        <div class="container">
+            <div class="row justify-content-around">
+                <input name="items_all_to_sub" type=submit value=戻る class="btn btn-secondary">
+                <input name="items_all_to_done" type=submit value=完了 class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

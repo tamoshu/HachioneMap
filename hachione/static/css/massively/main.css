@@ -2904,7 +2904,7 @@ input, select, textarea {
 /* Section/Article */
 
 	section.special, article.special {
-		text-align: center;
+		/* text-align: center; */
 	}
 
 	header {
@@ -2920,7 +2920,7 @@ input, select, textarea {
 		}
 
 		header > p {
-			font-style: italic;
+			/* font-style: italic; */
 		}
 
 		header > h1 + p {
@@ -3793,7 +3793,7 @@ input, select, textarea {
 			}
 
 			#main > .post.featured {
-				text-align: center;
+				/* text-align: center; */
 			}
 
 			@media screen and (max-width: 1280px) {

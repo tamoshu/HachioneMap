@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>ハチワンマップ - Release your idea - </title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/massively/main.css') }}" />
+		<noscript><link rel="stylesheet" href="{{ url_for('static', filename='css/massively/noscript.css') }}" /></noscript>
+
+		<style type="text/css">
+			.proc-outer{
+			  text-align: center;
+			}
+			.proc-inner{
+			  display: inline-block;
+			  text-align: left;
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+
+				<!-- Intro -->
+					<div id="intro">
+						<h1>あなたを悩ます<br />
+						問題に対処するには</h1>
+						<ul class="actions">
+							<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+						</ul>
+					</div>
+
+				<!-- Header -->
+					<header id="header">
+						<a href="{{ url_for('show_index') }}" class="logo">ハチワンマップ</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li class="active"><a href="{{ url_for('show_index') }}">ハチワンマップとは</a></li>
+							<li><a href="{{ url_for('set_username') }}">ハチワンマップを使う</a></li>
+						</ul>
+						<!--
+						<ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+						-->
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Featured Post -->
+							<article class="post featured">
+								<header class="major" style="font-style: normal;">
+									<h3 style="text-align: left">あなたを悩ます問題</h3>
+									<p style="text-align: left">
+										　人間生きていれば、職場の人間関係やキャリアの悩み、金欠や病気など、 なにかと問題が起きるものです。
+										私たちはそれらの問題に対処しながら前に進む必要がありますが、時にはどうしていいかわからず、
+										途方に暮れたり、とりあえず問題を先送りにしてしまうことがあります。
+										問題を解決できない状態は、当然あなたのストレスを増大させますが、
+										最悪の場合、<b><u>あなたの中に学習性無力感が現れ、人生の満足度を大きく低下させます。</u></b>
+										学習性無力感とは、アメリカのポジティブ心理学者マーティン・セリグマンが1967年に発表した現象で、
+										長期にわたってストレスの回避困難な環境に置かれた人や動物は、
+										その状況から逃れようとする努力すら行わなくなるという現象です。
+										一方、問題を解決できた体験が増えていけば、人生のコントロール感が増し、
+										人生の満足度が向上します。
+										よりよい人生を送るには、問題を解決する力が不可欠なわけです。
+									</p>
+
+									<h3 style="text-align: left">問題を解決する力を上げるには</h3>
+									<p style="text-align: left">
+										　ではどうしたら問題を解決する力が上がるのでしょうか。
+										問題を解決できない状態というのは、ひとつの視点に凝り固まってしまい、
+										現状を打開するアイデアが出ないケースが多いかと思います。
+										視野を広げ、アイデアを生むのを助けるツールとして、
+										<b><u>ハチワンマップ</u></b>を開発しました。
+										ハチワンマップは、数独のような９ｘ９のマスを使い、
+										抱えている問題や課題から、対策やアイデアを考えるためのツールです。
+										<br>
+										　ハチワンマップの使い方は、以下の手順の通りです。
+										<ol class="proc-inner" style="font:inherit;">
+											<li><b>メインテーマを考える</b><br>あなたが解決したい問題（メインテーマ）を考えます。</li>
+											<li><b>サブテーマを考える</b><br>メインテーマを中心とする３ｘ３のマスを描き、<br>
+												メインテーマの対策や、連想される事柄（サブテーマ）を周囲８マスに書き込みます。<br></li>
+											<li><b>ハチワンマップの枠を作る</b><br>サブテーマ作成で作った９マスを中心とする
+												９ｘ９のマスを描きます。<br>新しくできたマスを８つのエリアに分け、
+												それぞれの中心にサブテーマを書きます。</li>
+											<li><b>ハチワンマップを作る</b><br>各サブテーマについて、より具体的な対策や、<br>
+												連想できる事柄を記入します。すべてのマスが埋まったら完成です。</li>
+										</ol>
+									</p>
+									<div class="justify-content-center proc-outer">
+									</div>
+									<!-- 絵で説明 -->
+									<p style="text-align: left">
+										　人間の脳の習性として、「空白の原則」と言われるものがあります。
+										人間は、空白があるとそれを埋めたいと思う習性があります。
+										この習性を使い、アイデアを出しやすくするのがハチワンマップというわけです。
+										本ページでは、ブラウザ上でハチワンマップを使える無料アプリを置いています。
+										使ってみたい方は、以下のリンクからどうぞ。
+									</p>
+
+								</header>
+								<ul class="actions special">
+									<li><a href="{{ url_for('set_username') }}" class="button large">ハチワンマップを使ってみる</a></li>
+								</ul>
+							</article>
+					</div>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{{ url_for('static', filename='js/massively/jquery.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/massively/jquery.scrollex.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/massively/jquery.scrolly.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/massively/browser.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/massively/breakpoints.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/massively/util.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/massively/main.js') }}"></script>
+
+	</body>
+</html>

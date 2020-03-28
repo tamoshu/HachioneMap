@@ -1,16 +1,23 @@
 {# {% extends "layout.html" %} #}
 {% extends "chart.html" %}
 {% block body %}
+
+<header class="major">
+    <h4>Step1/3</h4>
+    <h5>まずは、あなたが解決したい問題や、達成したい目標を教えてください。</h5>
+    <p>下記フォームに問題や目標を入力したら「次へ」を押してください。</p>
+</header>
+
 <div class="form-group">
-    <h1>Main theme</h1>
     <form method="post" action="{{ url_for('show_chart', username=username) }}" class="main_theme">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
+            <div class="row justify-content-center">
+                <div class="col-3">
                     <textarea name="main_theme" cols="20" rows="3" class="form-control">{{ main_theme }}</textarea>
+                    <p>　</p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row justify-content-center">
                 <input name="main_to_sub" type=submit value=次へ class="btn btn-primary">
             </div>
         </div>

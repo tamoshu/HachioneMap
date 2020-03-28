@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>ハチワンマップ - Release your idea - </title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/massively/main.css') }}" />
+		<noscript><link rel="stylesheet" href="{{ url_for('static', filename='css/massively/noscript.css') }}" /></noscript>
+
+		<!-- Bootstrap CSS -->
+	    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap/bootstrap.css') }}">
+		<style type="text/css">
+			.modal-backdrop {
+				display: none;
+			}
+			.modal {
+				background:rgba(0,0,0,0.5);
+			}
+		</style>
+
+		<style type="text/css">
+			.proc-outer{
+			  text-align: center;
+			}
+			.proc-inner{
+			  display: inline-block;
+			  text-align: left;
+			}
+		</style>
+
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="{{ url_for('show_index') }}" class="logo">ハチワンマップ</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="{{ url_for('show_index') }}">ハチワンマップとは</a></li>
+							<li class="active"><a href="{{ url_for('set_username') }}">ハチワンマップを使う</a></li>
+						</ul>
+						<!--
+						<ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+						-->
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>ハチワンマップを<br />
+									使ってみよう</h1>
+									<!-- <p>Say something...</p> -->
+									{% block body %}{% endblock %}
+								</header>
+							</section>
+
+					</div>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- massibely -->
+		<script src="{{ url_for('static', filename='js/massively/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/massively/jquery.scrollex.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/massively/jquery.scrolly.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/massively/browser.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/massively/breakpoints.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/massively/util.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/massively/main.js') }}"></script>
+
+		<!-- bootstrap -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.4.1.js') }}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap/bootstrap.bundle.js') }}"></script>
+
+		<!-- responsive image map -->
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jQuery-rwdImageMaps-master/jquery.rwdImageMaps.min.js') }}"></script>
+		<script>
+			$(document).ready(function(e) {
+				$('img[usemap]').rwdImageMaps();
+
+				/* pending
+				$('area').hover(
+					function() {
+						$(this).focus();
+						//alert('focus');
+					},
+					function() {
+						$(this).blur();
+						//alert('blur');
+					}
+				);
+				*/
+
+				$('area').on('click', function() {
+					const label = $(this).attr('alt');
+					$('.modal-body').find('textarea').attr('name', label);
+				});
+			});
+		</script>
+
+	</body>
+</html>

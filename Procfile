@@ -1,1 +1,1 @@
-web: gunicorn mandara:app --log-file -
+web: gunicorn hachione:app --log-file -
