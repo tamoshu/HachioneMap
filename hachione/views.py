@@ -75,8 +75,8 @@ def set_username():
     model = HachioneModel()
 
     # for heroku debug
+    print('models.keys() : ')
     print(models.keys())
-    app.logger.debug('model keys : ' + models.keys())
 
     models[username] = model
 
@@ -87,8 +87,8 @@ def set_username():
 def show_chart(username):
 
     # for heroku debug
+    print('models.keys() : ')
     print(models.keys())
-    app.logger.debug('model keys : ' + models.keys())
 
     items = ['items0', 'items1', 'items2', 'items3', 'items4', 'items5', 'items6', 'items7', 'items8']
     items_existence = []
