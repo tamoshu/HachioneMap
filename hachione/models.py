@@ -1,5 +1,25 @@
+from hachione import db
 from graphviz import Graph, nohtml
 import base64
+
+class Entry(db.Model):
+    __tablename__ = 'entries'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(), primary_key=False)
+    model = db.Column(db.PickleType, primary_key=False)
+
+    def init(self):
+        db.create_all()
+
+    def get_model_from_db(self, username_in):
+        entry = Entry.query.filter(self.username == username_in).first()
+        return entry.model
+
+    def set_model_to_db(self, username_in, model_in):
+        entry = Entry.query.filter(self.username == username_in).first()
+        entry.model = model_in
+        db.session.add(entry)
+        db.session.commit()
 
 class HachioneModel:
     def __init__(self):
@@ -227,7 +247,7 @@ class ChartImageGenerator:
                     </TR>
                 </TABLE>>'''
 
-        print(label)
+        #print(label)
         chart3x3.node('chart3x3_html', label=label)
 
         return chart3x3.pipe()

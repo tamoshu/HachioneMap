@@ -1,13 +1,15 @@
 from flask import request, redirect, url_for, render_template
+from hachione.models import Entry
 from hachione.models import HachioneModel
 from hachione.models import ChartImageGenerator
-from hachione import app
+from hachione import app, db
 import random
 import string
+import pickle
+import io
 
-models = {}
-CIG = ChartImageGenerator()
-
+#models = {}
+cig = ChartImageGenerator()
 
 def get_cell_name(request_input):
     key_list = ['main_theme']
@@ -58,27 +60,37 @@ def show_index():
 
 @app.route('/chart')
 def set_username():
-    max_models_num = 20
+    max_models_num = 100
+
+    # for heroku debug
+    print(Entry.query.all())
 
     username = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
     # app.logger.debug('username = ' + username)
 
+    usernames = db.session.query(Entry.username).all()
     # username重複制限
-    while username in models.keys():
+    while username in usernames:
         username = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
         # app.logger.debug('username = ' + username)
 
     # model数制限
-    if len(models) > max_models_num - 1:
-        models.pop(next(iter(models)))  # 先頭のusername, modelを削除
+    while len(usernames) > max_models_num - 1:
+        entry = Entry.query.first()
+        db.session.delete(entry)
+        db.session.commit()
+
+        usernames = db.session.query(Entry.username).all()
+        #models.pop(next(iter(models)))  # 先頭のusername, modelを削除
 
     model = HachioneModel()
 
-    # for heroku debug
-    print('models.keys() : ')
-    print(models.keys())
+    #models[username] = model
+    model_pickled = pickle.dumps(model)
 
-    models[username] = model
+    entry = Entry(username=username, model=model_pickled)
+    db.session.add(entry)
+    db.session.commit()
 
     return redirect(url_for('show_chart', username=username))
 
@@ -87,8 +99,7 @@ def set_username():
 def show_chart(username):
 
     # for heroku debug
-    print('models.keys() : ')
-    print(models.keys())
+    print(Entry.query.all())
 
     items = ['items0', 'items1', 'items2', 'items3', 'items4', 'items5', 'items6', 'items7', 'items8']
     items_existence = []
@@ -96,10 +107,18 @@ def show_chart(username):
         items_existence.append(item in request.form)
 
     if 'main_to_sub' in request.form:
-        model = models[username]
-        model.set_main_theme(request.form['main_theme'])
+        #model = models[username]
+        entry = Entry.query.filter(username == username).first()
+        model = pickle.loads(entry.model)
 
-        chart_img3x3 = CIG.get_chart3x3_img_base64(model)
+        model.main_theme = request.form['main_theme']
+
+        model_pickled = pickle.dumps(model)
+        entry.model = model_pickled
+        db.session.add(entry)
+        db.session.commit()
+
+        chart_img3x3 = cig.get_chart3x3_img_base64(model)
 
         return render_template('sub_theme.html',
                                username=username,
@@ -107,15 +126,27 @@ def show_chart(username):
                                )
 
     elif 'sub_to_main' in request.form:
-        model = models[username]
+        #model = models[username]
+        entry = Entry.query.filter(username == username).first()
+        model = pickle.loads(entry.model)
+
         main_theme = model.get_main_theme()
+
+        model_pickled = pickle.dumps(model)
+        entry.model = model_pickled
+        db.session.add(entry)
+        db.session.commit()
+
         return render_template('main_theme.html',
                                username=username,
                                main_theme=main_theme
                                )
 
     elif 'reload_sub' in request.form:
-        model = models[username]
+        #model = models[username]
+        entry = Entry.query.filter(username == username).first()
+        model = pickle.loads(entry.model)
+
         sub_themes = model.get_sub_themes()
 
         cell_type, index1, _ = get_cell_name(request)
@@ -127,7 +158,12 @@ def show_chart(username):
             sub_themes[index1] = request.form[cell_type + str(index1)]
             model.set_sub_themes(sub_themes)
 
-        chart_img3x3 = CIG.get_chart3x3_img_base64(model)
+        model_pickled = pickle.dumps(model)
+        entry.model = model_pickled
+        db.session.add(entry)
+        db.session.commit()
+
+        chart_img3x3 = cig.get_chart3x3_img_base64(model)
 
         return render_template('sub_theme.html',
                                username=username,
@@ -135,8 +171,11 @@ def show_chart(username):
                                )
 
     elif 'sub_to_items_all' in request.form:
-        model = models[username]
-        chart_img9x9 = CIG.get_chart9x9_img_base64(model)
+        #model = models[username]
+        entry = Entry.query.filter(username == username).first()
+        model = pickle.loads(entry.model)
+
+        chart_img9x9 = cig.get_chart9x9_img_base64(model)
 
         return render_template('items_all.html',
                                username=username,
@@ -144,9 +183,11 @@ def show_chart(username):
                                )
 
     elif 'items_all_to_sub' in request.form:
-        model = models[username]
+        #model = models[username]
+        entry = Entry.query.filter(username == username).first()
+        model = pickle.loads(entry.model)
 
-        chart_img3x3 = CIG.get_chart3x3_img_base64(model)
+        chart_img3x3 = cig.get_chart3x3_img_base64(model)
 
         return render_template('sub_theme.html',
                                username=username,
@@ -154,7 +195,10 @@ def show_chart(username):
                                )
 
     elif 'reload_items_all' in request.form:
-        model = models[username]
+        #model = models[username]
+        entry = Entry.query.filter(username == username).first()
+        model = pickle.loads(entry.model)
+
         sub_themes = model.get_sub_themes()
         items = model.get_items()
 
@@ -171,7 +215,12 @@ def show_chart(username):
             items[index1][index2] = request.form[cell_type + str(index1) + '_' + str(index2)]
             model.set_items(items)
 
-        chart_img9x9 = CIG.get_chart9x9_img_base64(model)
+        model_pickled = pickle.dumps(model)
+        entry.model = model_pickled
+        db.session.add(entry)
+        db.session.commit()
+
+        chart_img9x9 = cig.get_chart9x9_img_base64(model)
 
         return render_template('items_all.html',
                                username=username,
@@ -179,8 +228,11 @@ def show_chart(username):
                                )
 
     elif 'items_all_to_done' in request.form:
-        model = models[username]
-        chart_img9x9 = CIG.get_chart9x9_img_base64(model)
+        #model = models[username]
+        entry = Entry.query.filter(username == username).first()
+        model = pickle.loads(entry.model)
+
+        chart_img9x9 = cig.get_chart9x9_img_base64(model)
 
         return render_template('done.html',
                                username=username,
@@ -188,8 +240,11 @@ def show_chart(username):
                                )
 
     elif 'done_to_items_all' in request.form:
-        model = models[username]
-        chart_img9x9 = CIG.get_chart9x9_img_base64(model)
+        #model = models[username]
+        entry = Entry.query.filter(username == username).first()
+        model = pickle.loads(entry.model)
+
+        chart_img9x9 = cig.get_chart9x9_img_base64(model)
 
         return render_template('items_all.html',
                                username=username,
@@ -197,9 +252,18 @@ def show_chart(username):
                                )
 
     else:
-        model = models[username]
+        #model = models[username]
+        entry = Entry.query.filter(username == username).first()
+        model = pickle.loads(entry.model)
+
         model.init()
         main_theme = model.get_main_theme()
+
+        model_pickled = pickle.dumps(model)
+        entry.model = model_pickled
+        db.session.add(entry)
+        db.session.commit()
+
         return render_template('main_theme.html',
                                username=username,
                                main_theme=main_theme
