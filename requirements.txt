@@ -4,3 +4,4 @@ matplotlib==3.0.3
 pandas==0.24.2
 urllib3==1.25.8
 graphviz==0.13.2
+psycopg2==2.8.4
