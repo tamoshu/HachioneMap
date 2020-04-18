@@ -1,0 +1,59 @@
+{# {% extends "layout.html" %} #}
+{% extends "chart.html" %}
+{% block body %}
+<div class="form-group">
+	<header class="major">
+        <h3>ログイン画面</h3>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        <form method="post" action="{{ url_for('login') }}" class="main_theme">
+            <div class="container">
+                {% for category, message in messages %}
+                    {% if category == 'login_error' %}
+                        <div class="alart alert-danger justify-content-center flash">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+                <div class="row justify-content-center">
+                    <dt>ユーザー名：</dt>
+                    <dd><input name="name" type=text size=20 value="" class="form-control"></dd>
+                </div>
+                <div class="row justify-content-center">
+                    <dt>パスワード：</dt>
+                    <dd><input name="password" type=password size=20 value="" class="form-control"></dd>
+                </div>
+                <br>
+                <div class="row justify-content-center">
+                    <input name="login" type=submit size=10 value="ログイン" class="btn btn-primary">
+                </div>
+            </div>
+        </form>
+
+        <br>
+
+        <h4>はじめての方はコチラ</h4>
+        <form method="post" action="{{ url_for('create_user') }}" class="main_theme">
+            <div class="container">
+                {% for category, message in messages %}
+                    {% if category == 'create_user_error'  %}
+                        <div class="alart alert-danger justify-content-center flash">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+                <div class="row justify-content-center">
+                    <dt>ユーザー名：</dt>
+                    <dd><input name="name" type=text size=20 value="" class="form-control"></dd>
+                </div>
+                <div class="row justify-content-center">
+                    <dt>パスワード：</dt>
+                    <dd><input name="password" type=password size=20 value="" class="form-control"></dd>
+                </div>
+                <br>
+                <div class="row justify-content-center">
+                    <input name="create" type=submit size=10 value="新規登録" class="btn btn-primary">
+                </div>
+            </div>
+        </form>
+    {% endwith %}
+
+</div>
+{% endblock %}

@@ -49,8 +49,18 @@
 					<nav id="nav">
 						<ul class="links">
 							<li class="active"><a href="{{ url_for('show_index') }}">ハチワンマップとは</a></li>
-							<li><a href="{{ url_for('set_username') }}">ハチワンマップを使う</a></li>
+							<li><a href="{{ url_for('goto_login') }}">ハチワンマップを使う</a></li>
 						</ul>
+						{% if session.user_id %}
+						<ul class="icons" style='font-family: "Source Sans Pro", Helvetica, sans-serif;'>
+							<Li>ようこそ　{{session.user_name}}　さん</Li>
+							<li><a href="{{ url_for('logout') }}">ログアウト</a></li>
+						</ul>
+						{% else %}
+						<ul class="icons"style='font-family: "Source Sans Pro", Helvetica, sans-serif;'>
+							<li><a href="{{ url_for('goto_login') }}">ログイン</a></li>
+						</ul>
+						{% endif %}
 						<!--
 						<ul class="icons">
 							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
@@ -148,7 +158,7 @@
 								</header>
 
 								<ul class="actions special">
-									<li><a href="{{ url_for('set_username') }}" class="button large">ハチワンマップを使ってみる</a></li>
+									<li><a href="{{ url_for('goto_login') }}" class="button large">ハチワンマップを使ってみる</a></li>
 								</ul>
 							</article>
 					</div>

@@ -1,12 +1,58 @@
 from hachione import db
 from graphviz import Graph, nohtml
+from sqlalchemy.orm import synonym
+from sqlalchemy.sql.functions import current_timestamp
+from datetime import datetime
+from werkzeug import check_password_hash, generate_password_hash
 import base64
 
+# ユーザクラス定義
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), primary_key=False, default='', nullable=False)
+    create_date = db.Column(db.DateTime, primary_key=False, default=current_timestamp(), nullable=False)
+    update_date = db.Column(db.DateTime, primary_key=False, default=current_timestamp(), onupdate=current_timestamp(), nullable=False)
+    _password = db.Column('password', db.String(100), nullable=False)
+
+    def init(self):
+        db.create_all()
+
+    def _get_password(self):
+        return self._password
+
+    def _set_password(self, password):
+        if password:
+            password = password.strip()
+        self._password = generate_password_hash(password)
+
+    password_descriptor = property(_get_password, _set_password)
+    password = synonym('_password', descriptor = password_descriptor)
+
+    def check_password(self, password):
+        password = password.strip()
+        if not password:
+            return False
+        return check_password_hash(self.password, password)
+
+    @classmethod
+    def authenticate(cls, query, name, password):
+        user = query(cls).filter(cls.username==name).first()
+        if user is None:
+            return None, False
+        return user, user.check_password(password)
+
+    def __repr__(self):
+        return u'<User id={self.id} username={self.username} create_data={self.create_date} update_data={self.update_date}>'.format(
+                self=self)
+
+# ハチワンマップとユーザの関連付けモデルクラス定義
 class Entry(db.Model):
     __tablename__ = 'entries'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(), primary_key=False)
-    model = db.Column(db.PickleType, primary_key=False)
+    username = db.Column(db.String(100), primary_key=False, default='', nullable=False)
+    model = db.Column(db.PickleType, primary_key=False, nullable=False)
 
     def init(self):
         db.create_all()
@@ -21,6 +67,7 @@ class Entry(db.Model):
         db.session.add(entry)
         db.session.commit()
 
+# ハチワンマップクラス定義
 class HachioneModel:
     def __init__(self):
         self.__SUB_THEME_NUM = 8
@@ -126,6 +173,7 @@ class HachioneModel:
 
         return self.table
 
+# ハチワンマップ描画クラス定義
 class ChartImageGenerator:
     def __init__(self):
         self.__CELL_W = 3
