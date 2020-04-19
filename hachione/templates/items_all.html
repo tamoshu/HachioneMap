@@ -8,7 +8,7 @@
 <header class="major">
     <h2>Step3/3</h2>
     <h3>Step2で連想したことから、さらに８つ連想してみましょう。</h3>
-    <div>
+    <div class="container">
         <div class="row justify-content-center proc-outer">
             <ol class="proc-inner">
                 <li>空いてるマスのいずれかをクリック or タップします。</li>
@@ -18,10 +18,19 @@
                     （すべて埋めなくてもいいですが、できるだけ埋めましょう。）</li>
             </ol>
         </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                {% if category == 'validation_error'  %}
+                    <div class="alart alert-danger justify-content-center flash">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+
     </div>
 </header>
 
-<img src="data:image/png;base64, {{ chart_img9x9 }}" class="img-fluid" usemap="#9x9">
+<img src="data:image/png;base64, {{ chart_img9x9 }}" class="img-fluid" usemap="#9x9" alt="my_hachionemap">
 <map name="9x9">
     {# sub_theme0 #}
     <area shape="rect" coords="17,11,124,117" alt="item0_0" data-toggle="modal" data-target="#Modal" style="cursor:pointer"/>

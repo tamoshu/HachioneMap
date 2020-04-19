@@ -2,14 +2,15 @@ from flask import request, redirect, url_for, render_template, session, flash
 from hachione.models import Entry, User
 from hachione.models import HachioneModel
 from hachione.models import ChartImageGenerator
+from hachione.models import CellForm
 from hachione import app, db
 import pickle
-from datetime import datetime
 
 #models = {}
 cig = ChartImageGenerator()
+cell_form = CellForm()
 
-# 入力されたハチワンマップのマスのクラスタグから、
+# 入力されたハチワンマップのマスのクラスタグを特定する関数
 def get_cell_name(request_input):
     # key_listの作成（'main_theme', 'sub_theme*', 'item*_*'のリスト）
     key_list = ['main_theme']
@@ -59,45 +60,6 @@ def show_index():
     return render_template('index.html')
 
 
-'''
-@app.route('/chart')
-def set_username():
-    max_models_num = 100
-
-    # for heroku debug
-    print(Entry.query.all())
-
-    username = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-    # app.logger.debug('username = ' + username)
-
-    usernames = db.session.query(Entry.username).all()
-    # username重複制限
-    while username in usernames:
-        username = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-        # app.logger.debug('username = ' + username)
-
-    # model数制限
-    while len(usernames) > max_models_num - 1:
-        entry = Entry.query.first()
-        db.session.delete(entry)
-        db.session.commit()
-
-        usernames = db.session.query(Entry.username).all()
-        #models.pop(next(iter(models)))  # 先頭のusername, modelを削除
-
-    model = HachioneModel()
-
-    #models[username] = model
-    model_pickled = pickle.dumps(model)
-
-    entry = Entry(username=username, model=model_pickled)
-    db.session.add(entry)
-    db.session.commit()
-
-    return redirect(url_for('show_chart', username=username))
-'''
-
-
 @app.route('/chart')
 def goto_login():
     return redirect(url_for('login'))
@@ -110,10 +72,6 @@ def login():
                 request.form['name'], request.form['password'])
 
         if authenticated:
-            #user.last_login_date = datetime.now()
-            #db.session.add(user)
-            #db.session.commit()
-
             session['user_id'] = user.id
             session['user_name'] = user.username
             flash('ログイン完了', 'logged_in')
@@ -182,55 +140,41 @@ def show_chart(username):
         return redirect(url_for('login'))
     else:
         if session['user_name'] != username:
-            return redirect(url_for('login'))
+            user = User.query.filter(User.username == username).first()
+            if not user:
+                return redirect(url_for('login'))
 
-    user = User.query.filter(User.username == username).first()
-    user.query.update({User.username: username})
     entry = Entry.query.filter(Entry.username == username).first()
     model = pickle.loads(entry.model)
 
-    # アクセス時間アップデート
-    #user.last_access_date = datetime.now()
-    #db.session.add(user)
-    #db.session.commit()
-    print(user)
-
-    # for heroku debug
-    # print(Entry.query.all())
-
-    '''
-    items = ['items0', 'items1', 'items2', 'items3', 'items4', 'items5', 'items6', 'items7', 'items8']
-    items_existence = []
-    for item in items:
-        items_existence.append(item in request.form)
-    '''
-
     # 画面遷移のパターンで分岐
     if 'main_to_sub' in request.form:
-        #model = models[username]
+        if cell_form.validate_celltext(request.form['main_theme']) == False:    # Validation NG
+            flash('ごめんなさい、「/」「\\」「&」「<」「>」「[」「]」の文字は使えません。','validation_error')
+            return render_template('main_theme.html',
+                                   username=username,
+                                   main_theme=model.main_theme
+                                   )
 
-        model.main_theme = request.form['main_theme']
+        else:
+            model.main_theme = request.form['main_theme']
 
-        model_pickled = pickle.dumps(model)
-        entry.model = model_pickled
-        #db.session.add(entry)
-        db.session.commit()
+            model_pickled = pickle.dumps(model)
+            entry.model = model_pickled
+            db.session.commit()
 
-        chart_img3x3 = cig.get_chart3x3_img_base64(model)
+            chart_img3x3 = cig.get_chart3x3_img_base64(model)
 
-        return render_template('sub_theme.html',
-                               username=username,
-                               chart_img3x3=chart_img3x3
-                               )
+            return render_template('sub_theme.html',
+                                   username=username,
+                                   chart_img3x3=chart_img3x3
+                                   )
 
     elif 'sub_to_main' in request.form:
-        #model = models[username]
-
         main_theme = model.get_main_theme()
 
         model_pickled = pickle.dumps(model)
         entry.model = model_pickled
-        #db.session.add(entry)
         db.session.commit()
 
         return render_template('main_theme.html',
@@ -239,22 +183,25 @@ def show_chart(username):
                                )
 
     elif 'reload_sub' in request.form:
-        #model = models[username]
-
         sub_themes = model.get_sub_themes()
 
         cell_type, index1, _ = get_cell_name(request)
         if cell_type == 'main_theme':
-            main_theme = request.form[cell_type]
-            model.set_main_theme(main_theme)
+            if cell_form.validate_celltext(request.form[cell_type]) == False:  # Validation NG
+                flash('ごめんなさい、「/」「\\」「&」「<」「>」「[」「]」の文字は使えません。', 'validation_error')
+            else:
+                main_theme = request.form[cell_type]
+                model.set_main_theme(main_theme)
 
         elif cell_type == 'sub_theme':
-            sub_themes[index1] = request.form[cell_type + str(index1)]
-            model.set_sub_themes(sub_themes)
+            if cell_form.validate_celltext(request.form[cell_type + str(index1)]) == False:  # Validation NG
+                flash('ごめんなさい、「/」「\\」「&」「<」「>」「[」「]」の文字は使えません。', 'validation_error')
+            else:
+                sub_themes[index1] = request.form[cell_type + str(index1)]
+                model.set_sub_themes(sub_themes)
 
         model_pickled = pickle.dumps(model)
         entry.model = model_pickled
-        #db.session.add(entry)
         db.session.commit()
 
         chart_img3x3 = cig.get_chart3x3_img_base64(model)
@@ -265,8 +212,6 @@ def show_chart(username):
                                )
 
     elif 'sub_to_items_all' in request.form:
-        #model = models[username]
-
         chart_img9x9 = cig.get_chart9x9_img_base64(model)
 
         return render_template('items_all.html',
@@ -275,8 +220,6 @@ def show_chart(username):
                                )
 
     elif 'items_all_to_sub' in request.form:
-        #model = models[username]
-
         chart_img3x3 = cig.get_chart3x3_img_base64(model)
 
         return render_template('sub_theme.html',
@@ -285,27 +228,33 @@ def show_chart(username):
                                )
 
     elif 'reload_items_all' in request.form:
-        #model = models[username]
-
         sub_themes = model.get_sub_themes()
         items = model.get_items()
 
         cell_type, index1, index2 = get_cell_name(request)
         if cell_type == 'main_theme':
-            main_theme = request.form[cell_type]
-            model.set_main_theme(main_theme)
+            if cell_form.validate_celltext(request.form[cell_type]) == False:  # Validation NG
+                flash('ごめんなさい、「/」「\\」「&」「<」「>」「[」「]」の文字は使えません。', 'validation_error')
+            else:
+                main_theme = request.form[cell_type]
+                model.set_main_theme(main_theme)
 
         elif cell_type == 'sub_theme':
-            sub_themes[index1] = request.form[cell_type + str(index1)]
-            model.set_sub_themes(sub_themes)
+            if cell_form.validate_celltext(request.form[cell_type + str(index1)]) == False:  # Validation NG
+                flash('ごめんなさい、「/」「\\」「&」「<」「>」「[」「]」の文字は使えません。', 'validation_error')
+            else:
+                sub_themes[index1] = request.form[cell_type + str(index1)]
+                model.set_sub_themes(sub_themes)
 
         elif cell_type == 'item':
-            items[index1][index2] = request.form[cell_type + str(index1) + '_' + str(index2)]
-            model.set_items(items)
+            if cell_form.validate_celltext(request.form[cell_type + str(index1) + '_' + str(index2)]) == False:  # Validation NG
+                flash('ごめんなさい、「/」「\\」「&」「<」「>」「[」「]」の文字は使えません。', 'validation_error')
+            else:
+                items[index1][index2] = request.form[cell_type + str(index1) + '_' + str(index2)]
+                model.set_items(items)
 
         model_pickled = pickle.dumps(model)
         entry.model = model_pickled
-        #db.session.add(entry)
         db.session.commit()
 
         chart_img9x9 = cig.get_chart9x9_img_base64(model)
@@ -316,8 +265,6 @@ def show_chart(username):
                                )
 
     elif 'items_all_to_done' in request.form:
-        #model = models[username]
-
         chart_img9x9 = cig.get_chart9x9_img_base64(model)
 
         return render_template('done.html',
@@ -326,8 +273,6 @@ def show_chart(username):
                                )
 
     elif 'done_to_items_all' in request.form:
-        #model = models[username]
-
         chart_img9x9 = cig.get_chart9x9_img_base64(model)
 
         return render_template('items_all.html',
@@ -336,14 +281,11 @@ def show_chart(username):
                                )
 
     elif 'restart' in request.form:
-        #model = models[username]
-
         model.init()
         main_theme = model.get_main_theme()
 
         model_pickled = pickle.dumps(model)
         entry.model = model_pickled
-        #db.session.add(entry)
         db.session.commit()
 
         return render_template('main_theme.html',
@@ -352,9 +294,6 @@ def show_chart(username):
                                )
 
     else:
-        #model = models[username]
-
-        #model.init()
         main_theme = model.get_main_theme()
 
         return render_template('main_theme.html',

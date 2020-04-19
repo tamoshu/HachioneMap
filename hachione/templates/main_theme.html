@@ -11,8 +11,15 @@
 <div class="form-group">
     <form method="post" action="{{ url_for('show_chart', username=username) }}" class="main_theme">
         <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    {% if category == 'validation_error'  %}
+                        <div class="alart alert-danger justify-content-center flash">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
             <div class="row justify-content-center">
-                <div class="col-3">
+                <div class="col-md-6">
                     <textarea name="main_theme" cols="20" rows="3" class="form-control">{{ main_theme }}</textarea>
                     <p>　</p>
                 </div>

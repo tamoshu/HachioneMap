@@ -195,15 +195,19 @@ class ChartImageGenerator:
         if cell_text == '':
             cell_text = ' '
 
-        # Cell string
+        # Cell string (row_char_num*3文字まで表示)
         row_char_num = 6
         if len(cell_text) > row_char_num and len(cell_text) <= row_char_num*2:
             cell_text = cell_text[:row_char_num] + '''<br/>''' \
                         + cell_text[row_char_num:]
-        elif len(cell_text) > row_char_num*2:
+        elif len(cell_text) > row_char_num*2 and len(cell_text) <= row_char_num*3:
             cell_text = cell_text[:row_char_num] + '''<br/>''' \
                         + cell_text[row_char_num:row_char_num*2] + '''<br/>''' \
                         + cell_text[row_char_num*2:]
+        elif len(cell_text) > row_char_num*3:
+            cell_text = cell_text[:row_char_num] + '''<br/>''' \
+                        + cell_text[row_char_num:row_char_num*2] + '''<br/>''' \
+                        + cell_text[row_char_num*2:row_char_num*3] + '''<br/>''' \
 
         # Cell background color setting
         # See https://www.tagindex.com/color/color_gradation.html
@@ -422,3 +426,14 @@ class ChartImageGenerator:
     def get_chart9x9_img_base64(self, model):
         img_byte = self.get_chart9x9_img(model)
         return base64.b64encode(img_byte).decode("ascii")
+
+# ハチワンマップセル入力のValidation用クラス
+class CellForm:
+    def validate_celltext(self, celltext):
+        err_chars = ['/', '\\', '&', '<', '>', '[', ']']
+        print(err_chars)
+        for err_char in err_chars:
+            if err_char in celltext:
+                return False    # NG
+
+        return True         # OK
