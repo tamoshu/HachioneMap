@@ -57,7 +57,13 @@ def init():
 
 @app.route('/index')
 def show_index():
-    return render_template('index.html')
+    # ユーザー画面への不正アクセスをブロック
+    if 'user_name' in session:
+        user = User.query.filter(User.username == session['user_name']).first()
+        if user:
+            return render_template('index.html', login=True)
+
+    return render_template('index.html', login=False)
 
 
 @app.route('/chart')
@@ -83,7 +89,7 @@ def login():
         if User.query.filter(User.id == session['user_id']).first():
             return redirect(url_for('show_chart', username=session['user_name']))
 
-    return render_template('login.html')
+    return render_template('login.html', login=False)
 
 
 @app.route('/logout')
@@ -153,6 +159,7 @@ def show_chart(username):
             flash('ごめんなさい、「/」「\\」「&」「<」「>」「[」「]」の文字は使えません。','validation_error')
             return render_template('main_theme.html',
                                    username=username,
+                                   login=True,
                                    main_theme=model.main_theme
                                    )
 
@@ -167,6 +174,7 @@ def show_chart(username):
 
             return render_template('sub_theme.html',
                                    username=username,
+                                   login=True,
                                    chart_img3x3=chart_img3x3
                                    )
 
@@ -179,6 +187,7 @@ def show_chart(username):
 
         return render_template('main_theme.html',
                                username=username,
+                               login=True,
                                main_theme=main_theme
                                )
 
@@ -208,6 +217,7 @@ def show_chart(username):
 
         return render_template('sub_theme.html',
                                username=username,
+                               login=True,
                                chart_img3x3=chart_img3x3
                                )
 
@@ -216,6 +226,7 @@ def show_chart(username):
 
         return render_template('items_all.html',
                                username=username,
+                               login=True,
                                chart_img9x9=chart_img9x9
                                )
 
@@ -224,6 +235,7 @@ def show_chart(username):
 
         return render_template('sub_theme.html',
                                username=username,
+                               login=True,
                                chart_img3x3=chart_img3x3
                                )
 
@@ -261,6 +273,7 @@ def show_chart(username):
 
         return render_template('items_all.html',
                                username=username,
+                               login=True,
                                chart_img9x9=chart_img9x9
                                )
 
@@ -269,6 +282,7 @@ def show_chart(username):
 
         return render_template('done.html',
                                username=username,
+                               login=True,
                                chart_img9x9=chart_img9x9
                                )
 
@@ -277,6 +291,7 @@ def show_chart(username):
 
         return render_template('items_all.html',
                                username=username,
+                               login=True,
                                chart_img9x9=chart_img9x9
                                )
 
@@ -290,6 +305,7 @@ def show_chart(username):
 
         return render_template('main_theme.html',
                                username=username,
+                               login=True,
                                main_theme=main_theme
                                )
 
@@ -298,5 +314,6 @@ def show_chart(username):
 
         return render_template('main_theme.html',
                                username=username,
+                               login=True,
                                main_theme=main_theme
                                )

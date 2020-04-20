@@ -51,7 +51,7 @@
 							<li class="active"><a href="{{ url_for('show_index') }}">ハチワンマップとは</a></li>
 							<li><a href="{{ url_for('goto_login') }}">ハチワンマップを使う</a></li>
 						</ul>
-						{% if session.user_id %}
+						{% if login %}
 						<ul class="icons" style='font-family: "Source Sans Pro", Helvetica, sans-serif;'>
 							<Li>ようこそ　{{session.user_name}}　さん</Li>
 							<li><a href="{{ url_for('logout') }}">ログアウト</a></li>
