@@ -13,11 +13,20 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), primary_key=False, default='', nullable=False)
     create_date = db.Column(db.DateTime, primary_key=False, default=current_timestamp(), nullable=False)
-    update_date = db.Column(db.DateTime, primary_key=False, default=current_timestamp(), onupdate=current_timestamp(), nullable=False)
+    update_date = db.Column(db.DateTime,
+                            primary_key=False,
+                            default=current_timestamp(),
+                            onupdate=current_timestamp(), nullable=False)
     _password = db.Column('password', db.String(100), nullable=False)
 
     def init(self):
         db.create_all()
+
+    def get_todays_date(self):
+        return datetime.now()
+
+    def update_update_date(self):
+        self.update_date = self.get_todays_date()
 
     def _get_password(self):
         return self._password

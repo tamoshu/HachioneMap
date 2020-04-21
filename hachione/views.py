@@ -150,6 +150,7 @@ def show_chart(username):
             if not user:
                 return redirect(url_for('login'))
 
+    user.update_update_date()
     entry = Entry.query.filter(Entry.username == username).first()
     model = pickle.loads(entry.model)
 
@@ -180,10 +181,6 @@ def show_chart(username):
 
     elif 'sub_to_main' in request.form:
         main_theme = model.get_main_theme()
-
-        model_pickled = pickle.dumps(model)
-        entry.model = model_pickled
-        db.session.commit()
 
         return render_template('main_theme.html',
                                username=username,
