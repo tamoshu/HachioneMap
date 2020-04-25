@@ -146,9 +146,11 @@ def show_chart(username):
         return redirect(url_for('login'))
     else:
         if session['user_name'] != username:
-            user = User.query.filter(User.username == username).first()
-            if not user:
-                return redirect(url_for('login'))
+            return redirect(url_for('login'))
+
+        user = User.query.filter(User.username == username).first()
+        if not user:
+            return redirect(url_for('login'))
 
     user.update_update_date()
     entry = Entry.query.filter(Entry.username == username).first()
